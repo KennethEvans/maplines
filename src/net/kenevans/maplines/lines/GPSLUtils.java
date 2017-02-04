@@ -13,9 +13,8 @@ import java.util.TimeZone;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.core.utils.Utils;
 import net.kenevans.maplines.lines.MapCalibration.MapData;
+import net.kenevans.maplines.utils.SWTUtils;
 
 public class GPSLUtils
 {
@@ -47,8 +46,8 @@ public class GPSLUtils
                 gcal = new GregorianCalendar();
                 gcal.setTime(new Date());
                 // Make a new local XMLGregorianCalendar
-                xgcal = DatatypeFactory.newInstance().newXMLGregorianCalendar(
-                    gcal);
+                xgcal = DatatypeFactory.newInstance()
+                    .newXMLGregorianCalendar(gcal);
                 // Get its offset
                 offset = xgcal.getTimezone() / 60.;
             } catch(Throwable t) {
@@ -57,7 +56,7 @@ public class GPSLUtils
 
             // Print header
             out.print(GPSLINK_ID + ls);
-            timeStamp = Utils.timeStamp("MMM dd, yyyy hh:mm:ssa");
+            timeStamp = SWTUtils.timeStamp("MMM dd, yyyy hh:mm:ssa");
             // Convert AM/PM
             if(timeStamp.substring(21, 22).equalsIgnoreCase("P")) {
                 timeStamp = timeStamp.substring(0, 21) + "p";
@@ -83,8 +82,7 @@ public class GPSLUtils
                 out.print(String.format("C%s%S%S%.6f%s%.6f%s%d%s%d", delimiter,
                     pointName, delimiter, data.getLat(), delimiter,
                     data.getLon(), delimiter, data.getX(), delimiter,
-                    data.getY())
-                    + ls);
+                    data.getY()) + ls);
             }
         } catch(Exception ex) {
             throw ex;
@@ -109,8 +107,8 @@ public class GPSLUtils
      */
     public static String getTimeFromXMLGregorianCalendar(
         XMLGregorianCalendar xgcal, double offset) {
-        GregorianCalendar gcal = xgcal.toGregorianCalendar(
-            TimeZone.getTimeZone("GMT"), null, null);
+        GregorianCalendar gcal = xgcal
+            .toGregorianCalendar(TimeZone.getTimeZone("GMT"), null, null);
         gcal.add(GregorianCalendar.MINUTE, (int)Math.round(60. * offset));
         // Don't use SimpleDateFormat("MM/dd/yyyy HH:mm:ss") It will format with
         // the current time zone, Use the values for MONTH, etc. from the gcal.

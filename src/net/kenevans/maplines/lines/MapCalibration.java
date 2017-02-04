@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Point;
 
-import net.kenevans.core.utils.SWTUtils;
 import Jama.Matrix;
 import Jama.SingularValueDecomposition;
+import net.kenevans.maplines.utils.SWTUtils;
 
 public class MapCalibration
 {
@@ -214,7 +214,7 @@ public class MapCalibration
         val[1] = transform.getC() * x + transform.getD() * y + transform.getF();
         // DEBUG
         // System.out.println(
-        //           String.format("x=%d y=%d lon=%.6f lat=%.6f", x, y, val[0], val[1]));
+        // String.format("x=%d y=%d lon=%.6f lat=%.6f", x, y, val[0], val[1]));
         return val;
     }
 

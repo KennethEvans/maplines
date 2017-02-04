@@ -2,12 +2,6 @@ package net.kenevans.maplines.ui;
 
 import java.util.List;
 
-import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.maplines.lines.Line;
-import net.kenevans.maplines.lines.Lines;
-import net.kenevans.maplines.lines.MapCalibration;
-import net.kenevans.maplines.lines.MapCalibration.MapData;
-
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -27,13 +21,20 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 
+import net.kenevans.maplines.lines.Line;
+import net.kenevans.maplines.lines.Lines;
+import net.kenevans.maplines.lines.MapCalibration;
+import net.kenevans.maplines.lines.MapCalibration.MapData;
+import net.kenevans.maplines.utils.SWTUtils;
+
 public class SWTImageViewerControl extends Composite
 {
     // private static final boolean usePrintSettingDialog = true;
     private static final boolean useStartImage = false;
     private static final String startImageName = "C:/users/evans/Pictures/DAZ.Dogfight.15017.jpg";
     // private static final String startImageName =
-    // "C:/Documents and Settings/evans/My Documents/My Pictures/ChromaticityDiagram.png";
+    // "C:/Documents and Settings/evans/My Documents/My
+    // Pictures/ChromaticityDiagram.png";
 
     private static final int LINE_WIDTH = 3;
     private static final int SELECTED_LINE_WIDTH = 5;
@@ -50,7 +51,8 @@ public class SWTImageViewerControl extends Composite
     private Line curLine;
     private MapLinesView view;
 
-    public SWTImageViewerControl(Composite parent, int style, MapLinesView view) {
+    public SWTImageViewerControl(Composite parent, int style,
+        MapLinesView view) {
         super(parent, style);
         shell = parent.getShell();
         display = shell.getDisplay();
@@ -62,8 +64,8 @@ public class SWTImageViewerControl extends Composite
 
         origin = new Point(0, 0);
 
-        canvas = new Canvas(this, SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL
-            | SWT.H_SCROLL);
+        canvas = new Canvas(this,
+            SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
         // canvas = new Canvas(shell, SWT.NO_BACKGROUND
         // | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(canvas);
@@ -133,7 +135,8 @@ public class SWTImageViewerControl extends Composite
                 }
                 int marginHeight = client.height - rect.height;
                 if(marginHeight > 0) {
-                    gc.fillRectangle(0, rect.height, client.width, marginHeight);
+                    gc.fillRectangle(0, rect.height, client.width,
+                        marginHeight);
                 }
 
                 // Draw the lines
@@ -144,8 +147,8 @@ public class SWTImageViewerControl extends Composite
                         if(line.getNPoints() < 1) {
                             continue;
                         }
-                        Color color = new Color(Display.getCurrent(), line
-                            .getRgb());
+                        Color color = new Color(Display.getCurrent(),
+                            line.getRgb());
                         gc.setForeground(color);
                         if(line.isSelected()) {
                             gc.setLineWidth(SELECTED_LINE_WIDTH);
@@ -161,9 +164,9 @@ public class SWTImageViewerControl extends Composite
                                 // Only the image scrolls. Have to add origin to
                                 // get
                                 // the right coordinates.
-                                gc.drawLine(origin.x + prev.x, origin.y
-                                    + prev.y, origin.x + point.x, origin.y
-                                    + point.y);
+                                gc.drawLine(origin.x + prev.x,
+                                    origin.y + prev.y, origin.x + point.x,
+                                    origin.y + point.y);
                                 prev = point;
                             }
                         }
@@ -219,8 +222,8 @@ public class SWTImageViewerControl extends Composite
                         // System.out.println(" nPoints=" + line.getNPoints()
                         // + (line == curLine ? " current" : ""));
                         // }
-                        curLine.addPoint(new Point(ev.x - origin.x, ev.y
-                            - origin.y));
+                        curLine.addPoint(
+                            new Point(ev.x - origin.x, ev.y - origin.y));
                         // // DEBUG
                         // System.out.println("mouseUp: x=" + (origin.x + ev.x)
                         // + ", " + (origin.y + ev.y) + " origin: x="
@@ -327,8 +330,8 @@ public class SWTImageViewerControl extends Composite
                 image = new Image(display, startImageName);
                 control.setImage(image);
             } catch(RuntimeException ex) {
-                SWTUtils.excMsgAsync(shell, "Cannot load image from:\n"
-                    + startImageName, ex);
+                SWTUtils.excMsgAsync(shell,
+                    "Cannot load image from:\n" + startImageName, ex);
             }
         }
 

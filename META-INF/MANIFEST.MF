@@ -6,7 +6,9 @@ Bundle-Version: 1.1.0.0
 Bundle-Activator: net.kenevans.maplines.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.kenevans.core.utils,
+ org.eclipse.core.resources,
+ org.eclipse.core.filesystem,
+ org.eclipse.ui.ide,
  org.eclipse.equinox.ds
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

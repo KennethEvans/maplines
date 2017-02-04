@@ -1,13 +1,13 @@
 package net.kenevans.maplines.handlers;
 
-import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.maplines.ui.MapLinesView;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+
+import net.kenevans.maplines.ui.MapLinesView;
+import net.kenevans.maplines.utils.SWTUtils;
 
 /*
  * Created on Aug 17, 2013
@@ -19,9 +19,8 @@ public class OpenFileHandler extends AbstractHandler
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
-     * .ExecutionEvent)
+     * @see org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.
+     * commands .ExecutionEvent)
      */
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -34,8 +33,8 @@ public class OpenFileHandler extends AbstractHandler
         // Find the MapLinesView
         MapLinesView view = null;
         try {
-            view = (MapLinesView)window.getActivePage().findView(
-                MapLinesView.ID);
+            view = (MapLinesView)window.getActivePage()
+                .findView(MapLinesView.ID);
             if(view == null) {
                 SWTUtils.errMsgAsync("Cannot find MapLinesView");
                 return null;

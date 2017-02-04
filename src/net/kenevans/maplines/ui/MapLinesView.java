@@ -29,7 +29,6 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
-import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.maplines.lines.GPSLUtils;
 import net.kenevans.maplines.lines.GPXUtils;
 import net.kenevans.maplines.lines.Line;
@@ -38,6 +37,7 @@ import net.kenevans.maplines.lines.MapCalibration;
 import net.kenevans.maplines.lines.MapCalibration.MapData;
 import net.kenevans.maplines.plugin.Activator;
 import net.kenevans.maplines.plugin.IPreferenceConstants;
+import net.kenevans.maplines.utils.SWTUtils;
 
 public class MapLinesView extends ViewPart implements IPreferenceConstants
 {
@@ -149,7 +149,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
             imageFileName = null;
         }
         calibFileName = prefs.getString(P_CALIB_FILE_NAME);
-         if(calibFileName != null && calibFileName.length() == 0) {
+        if(calibFileName != null && calibFileName.length() == 0) {
             calibFileName = null;
         }
         initialImagePath = prefs.getString(P_INITIAL_IMAGE_PATH);

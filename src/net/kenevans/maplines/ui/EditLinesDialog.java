@@ -3,10 +3,6 @@ package net.kenevans.maplines.ui;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.maplines.lines.Line;
-import net.kenevans.maplines.lines.Lines;
-
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -24,6 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
+
+import net.kenevans.maplines.lines.Line;
+import net.kenevans.maplines.lines.Lines;
+import net.kenevans.maplines.utils.SWTUtils;
 
 /*
  * Created on Aug 23, 2010

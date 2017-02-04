@@ -7,9 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import net.kenevans.core.utils.SWTUtils;
-
 import org.eclipse.swt.graphics.Point;
+
+import net.kenevans.maplines.utils.SWTUtils;
 
 /*
  * Created on Aug 20, 2013
@@ -48,8 +48,8 @@ public class GPXUtils
         File file = new File(fileName);
         boolean doIt = true;
         if(file.exists()) {
-            Boolean res = SWTUtils.confirmMsg("File exists: " + file.getPath()
-                + "\nOK to overwrite?");
+            Boolean res = SWTUtils.confirmMsg(
+                "File exists: " + file.getPath() + "\nOK to overwrite?");
             if(!res) {
                 doIt = false;
             }
@@ -60,19 +60,22 @@ public class GPXUtils
                 Date date = new Date();
                 out = new PrintWriter(new FileWriter(file));
                 // Write header
-                out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>");
+                out.println(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>");
                 out.println("<gpx");
                 out.println(" creator=\"MapLines\"");
                 out.println(" version=\"1.1\"");
                 out.println(" xmlns=\"http://www.topografix.com/GPX/1/1\"");
-                out.println(" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-                out.println(" xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 ");
+                out.println(
+                    " xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+                out.println(
+                    " xsi:schemaLocation=\"http://www.topografix.com/GPX/1/1 ");
                 out.println("   http://www.topografix.com/GPX/1/1/gpx.xsd\">");
 
                 // Write metadata
                 out.println("  <metadata>");
-                out.println(String.format("    <time>%s</time>",
-                    timeString(date)));
+                out.println(
+                    String.format("    <time>%s</time>", timeString(date)));
                 out.println("  </metadata>");
 
                 // Write lines
@@ -82,8 +85,10 @@ public class GPXUtils
                     out.println("  <trk>");
                     out.println("    <name>" + trackName + "</name>");
                     out.println("    <extensions>");
-                    out.println("      <gpxx:TrackExtension xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\">");
-                    out.println("        <gpxx:DisplayColor>Blue</gpxx:DisplayColor>");
+                    out.println(
+                        "      <gpxx:TrackExtension xmlns:gpxx=\"http://www.garmin.com/xmlschemas/GpxExtensions/v3\">");
+                    out.println(
+                        "        <gpxx:DisplayColor>Blue</gpxx:DisplayColor>");
                     out.println("      </gpxx:TrackExtension>");
                     out.println("    </extensions>");
                     double lon0 = 0, lat0 = 0;
@@ -108,15 +113,16 @@ public class GPXUtils
                                 dist = Math.abs(GPXUtils.M2MI
                                     * GPXUtils.greatCircleDistance(lat0, lon0,
                                         vals[1], vals[0]));
-                                time = (long)(dist / DEFAULT_SPEED * 3600. * 1000.);
+                                time = (long)(dist / DEFAULT_SPEED * 3600.
+                                    * 1000.);
                                 date.setTime(date.getTime() + time);
                                 System.out.println("dist=" + dist + " time="
                                     + time + " (" + time / 1000 + " sec)");
                                 lon0 = vals[0];
                                 lat0 = vals[1];
                             }
-                            out.println(String.format(
-                                "        <time>%s</time>", timeString(date)));
+                            out.println(String.format("        <time>%s</time>",
+                                timeString(date)));
                             out.println("      </trkpt>");
                         }
                         out.println("    </trkseg>");

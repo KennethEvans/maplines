@@ -3,10 +3,10 @@ package net.kenevans.maplines.lines;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.kenevans.core.utils.SWTUtils;
-
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+
+import net.kenevans.maplines.utils.SWTUtils;
 
 /*
  * Created on Aug 17, 2013

@@ -23,7 +23,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.maplines.utils.SWTUtils;
 
 /*
  * Created on Aug 17, 2013
