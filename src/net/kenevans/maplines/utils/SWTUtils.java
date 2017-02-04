@@ -60,6 +60,22 @@ import org.osgi.framework.Bundle;
 
 public class SWTUtils
 {
+    /**
+     * Get the extension of a file (without the dot).
+     * 
+     * @param file
+     * @return
+     */
+    public static String getExtension(File file) {
+        String ext = null;
+        String s = file.getName();
+        int i = s.lastIndexOf('.');
+        if(i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
+
     public static final String LS = System.getProperty("line.separator");
 
     /**
