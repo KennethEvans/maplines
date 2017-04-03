@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Map Lines
 Bundle-SymbolicName: net.kenevans.maplines; singleton:=true
-Bundle-Version: 1.1.1.0
+Bundle-Version: 1.1.2.0
 Bundle-Activator: net.kenevans.maplines.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -10,6 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem,
  org.eclipse.ui.ide
 Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: Jama-1.0.3.jar,
  .

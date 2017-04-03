@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.1.1.0" useFeatures="false" includeLaunchers="true">
+<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.1.2.0" useFeatures="false" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/net.kenevans.maplines/icons/MapLinesAbout.png"/>
+      <text>
+         %aboutText
+      </text>
+   </aboutInfo>
 
    <configIni use="default">
    </configIni>
@@ -22,6 +29,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>

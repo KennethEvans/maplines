@@ -102,6 +102,13 @@
                   style="push">
             </command>
          </menu>
+        <menu
+               label="Help">
+           <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About">
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             allPopups="false"
@@ -152,7 +159,7 @@
                name="additions"
                visible="true">
          </separator>
-      </menuContribution>
+     </menuContribution>
    </extension>
    <extension
          id="product"
@@ -167,6 +174,14 @@
          <property
                name="appName"
                value="Map Lines">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/MapLinesAbout.png">
+         </property>
+         <property
+               name="aboutText"
+               value="%aboutText">
          </property>
       </product>
    </extension>
