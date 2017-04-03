@@ -72,7 +72,7 @@
             </command>
             <command
                   commandId="net.kenevans.maplines.savelinesimage"
-                  label="Save Lines Image..."
+                  label="Save Lines as PNG..."
                   style="push">
             </command>
             <command
@@ -199,7 +199,7 @@
       <command
             categoryId="net.kenevans.maplines.category"
             id="net.kenevans.maplines.savelinesimage"
-            name="Save Lines Image...">
+            name="Save Lines as PNG...">
       </command>
       <command
             categoryId="net.kenevans.maplines.category"

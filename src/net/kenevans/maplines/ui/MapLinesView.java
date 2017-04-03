@@ -355,9 +355,9 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
             SWTUtils.errMsg("Calibration for converting lines is not valid");
             return;
         }
-        // Open a FileDialog
+        // Open a FileDialog with multiple selection
         FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
-            SWT.OPEN);
+            SWT.MULTI);
         String[] extensions = {"*.gpx"};
         String[] names = {"GPX: *.gpx"};
         dlg.setFilterExtensions(extensions);
@@ -368,27 +368,38 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
         String selectedPath = dlg.open();
         String fileName = selectedPath;
         // Save the path for next time
-        if(selectedPath != null) {
-            initialGpxPath = selectedPath;
-            // Extract the directory part of the selectedPath
-            index = selectedPath.lastIndexOf(File.separator);
-            if(index > 0) {
-                initialGpxPath = selectedPath.substring(0, index);
-                setStringPreference(P_INITIAL_GPX_PATH, initialGpxPath);
-            }
+        if(selectedPath == null) return;
+        initialGpxPath = selectedPath;
+        // Extract the directory part of the selectedPath
+        index = selectedPath.lastIndexOf(File.separator);
+        if(index > 0) {
+            initialGpxPath = selectedPath.substring(0, index);
+            setStringPreference(P_INITIAL_GPX_PATH, initialGpxPath);
+        }
+        // Loop over the files
+        String[] files = dlg.getFileNames();
+        File file;
+        for(String name : files) {
+            // getFileNames() returns only the names, and not the path
+            file = new File(initialGpxPath, name);
+            fileName = file.getPath();
             try {
                 lines.readGpxLines(fileName, mapCalibration);
             } catch(Exception ex) {
                 SWTUtils.excMsg("Failed to read GPX file", ex);
             }
-            viewer.getCanvas().redraw();
         }
+        viewer.getCanvas().redraw();
     }
 
     /**
      * Brings up a FileDialog to choose a file to save lines.
      */
     public void saveLines() {
+        if(lines == null || lines.getLines().isEmpty()) {
+            SWTUtils.errMsg("There are no lines defined");
+            return;
+        }
         // Open a FileDialog
         FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
             SWT.SAVE);
@@ -418,23 +429,15 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
      * Brings up a FileDialog to choose a file to save lines as an image.
      */
     public void saveLinesImage() {
-        if(lines == null) {
-            SWTUtils.errMsg("No lines available");
-            return;
-        }
-        if(mapCalibration == null) {
-            SWTUtils
-                .errMsg("Calibration for converting lines is not available");
-            return;
-        }
-        if(mapCalibration.getTransform() == null) {
-            SWTUtils.errMsg("Calibration for converting lines is not valid");
+        if(lines == null || lines.getLines().isEmpty()) {
+            SWTUtils.errMsg("There are no lines defined");
             return;
         }
         if(viewer.getImage() == null) {
             SWTUtils.errMsg("Image for determining size is not valid");
             return;
         }
+
         // Get the width and height
         int width, height;
         try {
@@ -478,8 +481,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
                 initialLinesPath = selectedPath.substring(0, index);
                 setStringPreference(P_INITIAL_LINES_PATH, initialLinesPath);
             }
-            lines.saveLinesImage(display, fileName, mapCalibration, width,
-                height);
+            lines.saveLinesImage(display, fileName, width, height);
         }
     }
 

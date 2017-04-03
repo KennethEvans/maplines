@@ -156,14 +156,10 @@ public class Lines
      * 
      * @param fileName The name of the file.
      */
-    public void saveLinesImage(Display display, String fileName,
-        MapCalibration mapCalibration, int width, int height) {
+    public void saveLinesImage(Display display, String fileName, int width,
+        int height) {
         if(display == null) {
             SWTUtils.errMsg("Error creating image. Invalid map Display");
-            return;
-        }
-        if(mapCalibration == null) {
-            SWTUtils.errMsg("Error creating image. Invalid map calibration");
             return;
         }
 
@@ -213,9 +209,6 @@ public class Lines
                 }
             }
             gc.dispose();
-            if(lines == null || lines.isEmpty()) {
-                SWTUtils.warnMsg("There were no lines to write");
-            }
 
             // Save the image
             ImageLoader loader = new ImageLoader();
