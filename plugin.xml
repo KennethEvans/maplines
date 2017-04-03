@@ -71,6 +71,11 @@
                   style="push">
             </command>
             <command
+                  commandId="net.kenevans.maplines.savelinesimage"
+                  label="Save Lines Image..."
+                  style="push">
+            </command>
+            <command
                   commandId="net.kenevans.maplines.savegpx"
                   label="Save GPX..."
                   style="push">
@@ -190,6 +195,11 @@
             categoryId="net.kenevans.maplines.category"
             id="net.kenevans.maplines.savelines"
             name="Save Lines...">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.savelinesimage"
+            name="Save Lines Image...">
       </command>
       <command
             categoryId="net.kenevans.maplines.category"

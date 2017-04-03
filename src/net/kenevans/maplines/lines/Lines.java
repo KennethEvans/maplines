@@ -15,7 +15,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -142,6 +148,82 @@ public class Lines
                 if(out != null) out.close();
                 out = null;
             }
+        }
+    }
+
+    /**
+     * Saves the lines as an image to a file.
+     * 
+     * @param fileName The name of the file.
+     */
+    public void saveLinesImage(Display display, String fileName,
+        MapCalibration mapCalibration, int width, int height) {
+        if(display == null) {
+            SWTUtils.errMsg("Error creating image. Invalid map Display");
+            return;
+        }
+        if(mapCalibration == null) {
+            SWTUtils.errMsg("Error creating image. Invalid map calibration");
+            return;
+        }
+
+        // Check the file
+        File file = new File(fileName);
+        boolean doIt = true;
+        if(file.exists()) {
+            Boolean res = SWTUtils.confirmMsg(
+                "File exists: " + file.getPath() + "\nOK to overwrite?");
+            if(!res) {
+                doIt = false;
+            }
+        }
+        if(!doIt) return;
+
+        // Create the image
+        try {
+            Image image = new Image(display, width, height);
+            GC gc = new GC(image);
+            // Make it transparent
+            gc.setAlpha(0);
+            gc.fillRectangle(0, 0, width, height);
+            gc.setAlpha(255);
+            gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
+            gc.setLineWidth(1);
+            // Draw the lines
+            if(lines != null) {
+                Line line;
+                Point point;
+                for(int i = 0; i < getNLines(); i++) {
+                    line = lines.get(i);
+                    // if(line.getDesc() != null
+                    // && line.getDesc().length() != 0) {
+                    // out.println(START_LINES_TAG + " " + line.getDesc());
+                    // } else {
+                    // out.println(START_LINES_TAG);
+                    // }
+                    int startX = 0, startY = 0;
+                    for(int j = 0; j < line.getNPoints(); j++) {
+                        point = line.getPoints().get(j);
+                        if(j > 0) {
+                            gc.drawLine(startX, startY, point.x, point.y);
+                        }
+                        startX = point.x;
+                        startY = point.y;
+                    }
+                }
+            }
+            gc.dispose();
+            if(lines == null || lines.isEmpty()) {
+                SWTUtils.warnMsg("There were no lines to write");
+            }
+
+            // Save the image
+            ImageLoader loader = new ImageLoader();
+            loader.data = new ImageData[] {image.getImageData()};
+            loader.save(fileName, SWT.IMAGE_PNG);
+            image.dispose();
+        } catch(Exception ex) {
+            SWTUtils.excMsg("Error writing image file", ex);
         }
     }
 

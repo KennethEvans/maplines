@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -414,6 +415,75 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
     }
 
     /**
+     * Brings up a FileDialog to choose a file to save lines as an image.
+     */
+    public void saveLinesImage() {
+        if(lines == null) {
+            SWTUtils.errMsg("No lines available");
+            return;
+        }
+        if(mapCalibration == null) {
+            SWTUtils
+                .errMsg("Calibration for converting lines is not available");
+            return;
+        }
+        if(mapCalibration.getTransform() == null) {
+            SWTUtils.errMsg("Calibration for converting lines is not valid");
+            return;
+        }
+        if(viewer.getImage() == null) {
+            SWTUtils.errMsg("Image for determining size is not valid");
+            return;
+        }
+        // Get the width and height
+        int width, height;
+        try {
+            Image image = viewer.getImage();
+            ImageData imageData = image.getImageData();
+            width = imageData.width;
+            height = imageData.height;
+        } catch(Exception ex) {
+            SWTUtils.excMsg("Error getting image data", ex);
+            return;
+        }
+        if(width <= 0 || height <= 0) {
+            SWTUtils.errMsg("Image width and/or height is 0");
+            return;
+        }
+
+        // Open a FileDialog
+        FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
+            SWT.SAVE);
+        String[] extensions = {"*.png"};
+        String[] names = {"PNG: *.png"};
+        dlg.setFilterExtensions(extensions);
+        dlg.setFilterNames(names);
+        dlg.setFilterPath(initialLinesPath);
+
+        int index = 0;
+        String selectedPath = dlg.open();
+        String fileName = selectedPath;
+        // Save the path for next time
+        if(selectedPath != null) {
+            initialLinesPath = selectedPath;
+            // Check the extension
+            String ext = SWTUtils.getExtension(new File(selectedPath));
+            if(ext == null || !ext.toLowerCase().equals("png")) {
+                SWTUtils.errMsg("Only PNG (.png) is supported");
+                return;
+            }
+            // Extract the directory part of the selectedPath
+            index = selectedPath.lastIndexOf(File.separator);
+            if(index > 0) {
+                initialLinesPath = selectedPath.substring(0, index);
+                setStringPreference(P_INITIAL_LINES_PATH, initialLinesPath);
+            }
+            lines.saveLinesImage(display, fileName, mapCalibration, width,
+                height);
+        }
+    }
+
+    /**
      * Brings up a FileDialog to choose a GPX file to save tracks.
      */
     public void saveGPX() {
@@ -681,6 +751,17 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
             }
         };
         id = "net.kenevans.maplines.savelines";
+        handlerService.activateHandler(id, handler);
+
+        // Save Lines Image
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                saveLinesImage();
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.savelinesimage";
         handlerService.activateHandler(id, handler);
 
         // Clear Lines
