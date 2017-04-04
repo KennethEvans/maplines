@@ -1,5 +1,9 @@
 package net.kenevans.maplines.lines;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +15,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,6 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -177,44 +183,36 @@ public class Lines
 
         // Create the image
         try {
-            Image image = new Image(display, width, height);
-            GC gc = new GC(image);
-            // Make it transparent
-            gc.setAlpha(0);
-            gc.fillRectangle(0, 0, width, height);
-            gc.setAlpha(255);
-            gc.setForeground(display.getSystemColor(SWT.COLOR_RED));
-            gc.setLineWidth(1);
+            BufferedImage bufferedImage = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = bufferedImage.createGraphics();
+            
+            // Make the background transparent
+            g2d.setBackground(new Color(255, 255, 255, 0));
+            g2d.clearRect(0, 0, width, height);
+
             // Draw the lines
+            g2d.setColor(Color.RED);
             if(lines != null) {
                 Line line;
                 Point point;
                 for(int i = 0; i < getNLines(); i++) {
                     line = lines.get(i);
-                    // if(line.getDesc() != null
-                    // && line.getDesc().length() != 0) {
-                    // out.println(START_LINES_TAG + " " + line.getDesc());
-                    // } else {
-                    // out.println(START_LINES_TAG);
-                    // }
                     int startX = 0, startY = 0;
                     for(int j = 0; j < line.getNPoints(); j++) {
                         point = line.getPoints().get(j);
                         if(j > 0) {
-                            gc.drawLine(startX, startY, point.x, point.y);
+                            g2d.drawLine(startX, startY, point.x, point.y);
                         }
                         startX = point.x;
                         startY = point.y;
                     }
                 }
             }
-            gc.dispose();
+            g2d.dispose();
 
             // Save the image
-            ImageLoader loader = new ImageLoader();
-            loader.data = new ImageData[] {image.getImageData()};
-            loader.save(fileName, SWT.IMAGE_PNG);
-            image.dispose();
+            ImageIO.write(bufferedImage, "PNG", file);
         } catch(Exception ex) {
             SWTUtils.excMsg("Error writing image file", ex);
         }
