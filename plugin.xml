@@ -61,6 +61,11 @@
                   label="Open Lines..."
                   style="push">
             </command>
+            <command
+                  commandId="net.kenevans.maplines.linesfromgpx"
+                  label="Lines from GPX..."
+               style="push">
+            </command>
             <separator
                   name="separator"
                   visible="true">
@@ -134,15 +139,6 @@
          </command>
          <separator
                name="separator3"
-               visible="true">
-         </separator>
-         <command
-               commandId="net.kenevans.maplines.linesfromgpx"
-               label="Lines from GPX..."
-               style="push">
-         </command>
-         <separator
-               name="separator4"
                visible="true">
          </separator>
          <command
