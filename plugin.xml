@@ -32,6 +32,8 @@
       <perspectiveExtension
             targetID="*">
          <view
+               moveable="false"
+               closeable="false"
                standalone="true"
                minimized="false"
                relative="org.eclipse.ui.editorss"
