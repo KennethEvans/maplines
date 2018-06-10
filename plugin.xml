@@ -92,6 +92,11 @@
                   label="Save GPSL..."
                   style="push">
             </command>
+            <command
+                  commandId="net.kenevans.maplines.savecsv"
+                  label="Save CSV..."
+                  style="push">
+            </command>
             <separator
                   name="separator1"
                   visible="true">
@@ -223,6 +228,11 @@
             categoryId="net.kenevans.maplines.category"
             id="net.kenevans.maplines.savegpsl"
             name="Save GPSL...">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.savecsv"
+            name="Save CSV...">
       </command>
       <command
             categoryId="net.kenevans.maplines.category"

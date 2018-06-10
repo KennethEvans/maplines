@@ -151,6 +151,52 @@ public class Lines
     }
 
     /**
+     * Saves the lines to a file.
+     * 
+     * @param fileName The name of the file.
+     */
+    public void saveLinesCSV(String fileName) {
+        File file = new File(fileName);
+        boolean doIt = true;
+        if(file.exists()) {
+            Boolean res = SWTUtils.confirmMsg(
+                "File exists: " + file.getPath() + "\nOK to overwrite?");
+            if(!res) {
+                doIt = false;
+            }
+        }
+        if(doIt) {
+            PrintWriter out = null;
+            try {
+                out = new PrintWriter(new FileWriter(file));
+                if(lines != null) {
+                    Line line;
+                    Point point;
+                    for(int i = 0; i < getNLines(); i++) {
+                        line = lines.get(i);
+                        if(line.getDesc() != null
+                            && line.getDesc().length() != 0) {
+                            out.println(START_LINES_TAG + " " + line.getDesc());
+                        } else {
+                            out.println(START_LINES_TAG);
+                        }
+                        for(int j = 0; j < line.getNPoints(); j++) {
+                            point = line.getPoints().get(j);
+                            out.println(point.x + " " + point.y);
+                        }
+                        out.println(END_LINES_TAG);
+                    }
+                }
+            } catch(Exception ex) {
+                SWTUtils.excMsg("Error writing " + fileName, ex);
+            } finally {
+                if(out != null) out.close();
+                out = null;
+            }
+        }
+    }
+
+    /**
      * Saves the lines as an image to a file.
      * 
      * @param fileName The name of the file.

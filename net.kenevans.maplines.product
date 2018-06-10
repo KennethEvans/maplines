@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.1.4.0" useFeatures="false" includeLaunchers="true">
+<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.3.0.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/net.kenevans.maplines/icons/MapLinesAbout.png"/>
@@ -78,10 +78,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="org.eclipse.core.databinding.property"/>
       <plugin id="org.eclipse.core.expressions"/>
       <plugin id="org.eclipse.core.filesystem"/>
-      <plugin id="org.eclipse.core.filesystem.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.filesystem.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.jobs"/>
       <plugin id="org.eclipse.core.resources"/>
-      <plugin id="org.eclipse.core.resources.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.core.resources.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.core.runtime"/>
       <plugin id="org.eclipse.core.variables"/>
       <plugin id="org.eclipse.e4.core.commands"/>
@@ -122,7 +122,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="org.eclipse.equinox.preferences"/>
       <plugin id="org.eclipse.equinox.registry"/>
       <plugin id="org.eclipse.equinox.security"/>
-      <plugin id="org.eclipse.equinox.security.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.equinox.security.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
@@ -132,7 +132,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="org.eclipse.osgi.services"/>
       <plugin id="org.eclipse.osgi.util"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true"/>
       <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.forms"/>

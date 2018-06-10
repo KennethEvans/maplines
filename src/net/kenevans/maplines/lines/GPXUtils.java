@@ -43,6 +43,8 @@ public class GPXUtils
     /** Multiplier to convert millisec to hours. */
     public static final double MS2HR = .001 * SEC2HR;
 
+    public static final String COMMA = ",";
+
     public static void writeGPXFile(String fileName, String trackName,
         MapCalibration mapCalibration, Lines lines) {
         File file = new File(fileName);
@@ -129,6 +131,57 @@ public class GPXUtils
                     }
                     out.println("  </trk>");
                     out.println("</gpx>");
+                }
+            } catch(Exception ex) {
+                SWTUtils.excMsg("Error writing " + fileName, ex);
+            } finally {
+                if(out != null) out.close();
+                out = null;
+            }
+        }
+    }
+
+    public static void writeCSVFile(String fileName,
+        MapCalibration mapCalibration, Lines lines) {
+        File file = new File(fileName);
+        boolean doIt = true;
+        if(file.exists()) {
+            Boolean res = SWTUtils.confirmMsg(
+                "File exists: " + file.getPath() + "\nOK to overwrite?");
+            if(!res) {
+                doIt = false;
+            }
+        }
+        if(doIt) {
+            PrintWriter out = null;
+            try {
+                out = new PrintWriter(new FileWriter(file));
+                // Write header
+                String[] headings = {"Name", "X", "Y", "x", "y"};
+                boolean first = true;
+                for(String heading : headings) {
+                    if(!first) {
+                        out.print(COMMA);
+                    }
+                    out.print(heading);
+                    first = false;
+                }
+                out.println();
+                // Write lines
+                if(lines != null) {
+                    Line line;
+                    Point point;
+                    for(int i = 0; i < lines.getNLines(); i++) {
+                        line = lines.getLines().get(i);
+                        for(int j = 0; j < line.getNPoints(); j++) {
+                            point = line.getPoints().get(j);
+                            double[] vals = mapCalibration.transform(point.x,
+                                point.y);
+                            out.println(String.format("\"%s\"%s%f%s%f%s%d%s%d",
+                                line.getDesc(), COMMA, vals[0], COMMA, vals[1],
+                                COMMA, point.x, COMMA, point.y));
+                        }
+                    }
                 }
             } catch(Exception ex) {
                 SWTUtils.excMsg("Error writing " + fileName, ex);

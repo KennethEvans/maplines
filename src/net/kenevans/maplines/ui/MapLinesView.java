@@ -601,6 +601,49 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
     }
 
     /**
+     * Brings up a FileDialog to choose a CSV file to save lines.
+     */
+    public void saveCSV() {
+        if(lines == null) {
+            SWTUtils.errMsg("No lines available");
+            return;
+        }
+        if(mapCalibration == null) {
+            SWTUtils
+                .errMsg("Calibration for converting lines is not available");
+            return;
+        }
+        if(mapCalibration.getTransform() == null) {
+            SWTUtils.errMsg("Calibration for converting lines is not valid");
+            return;
+        }
+        // Open a FileDialog
+        FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
+            SWT.SAVE);
+        String[] extensions = {"*.csv"};
+        String[] names = {"CSV: *.csv"};
+        dlg.setFilterExtensions(extensions);
+        dlg.setFilterNames(names);
+        dlg.setFilterPath(initialDataPath);
+
+        int index = 0;
+        String selectedPath = dlg.open();
+        String fileName = selectedPath;
+        // Save the path for next time
+        if(selectedPath != null) {
+            initialDataPath = selectedPath;
+            // Extract the directory part of the selectedPath
+            index = selectedPath.lastIndexOf(File.separator);
+            if(index > 0) {
+                initialDataPath = selectedPath.substring(0, index);
+                setStringPreference(P_INITIAL_DATA_PATH, initialDataPath);
+            }
+
+            GPXUtils.writeCSVFile(fileName, mapCalibration, lines);
+        }
+    }
+
+    /**
      * Loads a new image from the given filename.
      * 
      * @param fileName
@@ -820,6 +863,18 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
         };
         id = "net.kenevans.maplines.savegpsl";
         handlerService.activateHandler(id, handler);
+
+        // Save CSV
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                saveCSV();
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.savecsv";
+        handlerService.activateHandler(id, handler);
+
 
         // Start Line
         handler = new AbstractHandler() {
