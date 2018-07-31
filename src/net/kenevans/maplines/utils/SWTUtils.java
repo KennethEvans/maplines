@@ -682,7 +682,7 @@ public class SWTUtils
     public static int getTextWidth(Control text, int cols) {
         GC gc = new GC(text);
         FontMetrics fm = gc.getFontMetrics();
-        int width = cols * fm.getAverageCharWidth();
+        int width = (int)Math.round(cols * fm.getAverageCharacterWidth());
         gc.dispose();
         return width;
     }
