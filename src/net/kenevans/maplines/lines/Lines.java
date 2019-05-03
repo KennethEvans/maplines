@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
@@ -194,11 +195,16 @@ public class Lines {
 	}
 
 	/**
-	 * Saves the lines as an image to a file.
+	 * Saves the lines as an image to a file. If the given image is not null draws
+	 * them on top of it.
 	 * 
-	 * @param fileName The name of the file.
+	 * @param display
+	 * @param fileName
+	 * @param width
+	 * @param height
+	 * @param image
 	 */
-	public void saveLinesImage(Display display, String fileName, int width, int height) {
+	public void saveLinesImage(Display display, String fileName, int width, int height, Image image) {
 		if (display == null) {
 			SWTUtils.errMsg("Error creating image. Invalid map Display");
 			return;
@@ -224,6 +230,11 @@ public class Lines {
 			// Make the background transparent
 			g2d.setBackground(new Color(255, 255, 255, 0));
 			g2d.clearRect(0, 0, width, height);
+
+			// Add the image
+			if (image != null) {
+				g2d.drawImage(SWTUtils.convertToAWT(image.getImageData()), 0, 0, null);
+			}
 
 			// Draw the lines
 			g2d.setColor(Color.RED);

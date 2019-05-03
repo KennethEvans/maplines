@@ -83,6 +83,11 @@
                   style="push">
             </command>
             <command
+                  commandId="net.kenevans.maplines.savelineswithimage"
+                  label="Save Lines with Image as PNG..."
+                  style="push">
+            </command>
+            <command
                   commandId="net.kenevans.maplines.savegpx"
                   label="Save GPX..."
                   style="push">
@@ -218,6 +223,11 @@
             categoryId="net.kenevans.maplines.category"
             id="net.kenevans.maplines.savelinesimage"
             name="Save Lines as PNG...">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.savelineswithimage"
+            name="Save Lines with Image as PNG...">
       </command>
       <command
             categoryId="net.kenevans.maplines.category"
