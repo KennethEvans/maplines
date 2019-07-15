@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.4.3.0" useFeatures="false" includeLaunchers="true">
+<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.4.4.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/net.kenevans.maplines/icons/MapLinesAbout.png"/>
@@ -120,9 +120,13 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="org.eclipse.equinox.p2.metadata.repository"/>
       <plugin id="org.eclipse.equinox.p2.repository"/>
       <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.region" fragment="true"/>
       <plugin id="org.eclipse.equinox.registry"/>
       <plugin id="org.eclipse.equinox.security"/>
       <plugin id="org.eclipse.equinox.security.win32.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.equinox.supplement"/>
+      <plugin id="org.eclipse.equinox.transforms.hook" fragment="true"/>
+      <plugin id="org.eclipse.equinox.weaving.hook" fragment="true"/>
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
@@ -136,6 +140,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="org.eclipse.text"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.ide"/>
+      <plugin id="org.eclipse.ui.navigator"/>
       <plugin id="org.eclipse.ui.win32" fragment="true"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.tukaani.xz"/>
