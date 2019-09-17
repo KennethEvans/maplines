@@ -52,26 +52,12 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 	private Shell shell;
 
 	/**
-	 * Image path used for initializing the open image dialog.
+	 * Path used for initializing the open dialogs.
 	 */
 	protected String initialImagePath;
 	/**
 	 * Image path used for initializing the open calibration dialog.
 	 */
-	protected String initialCalibPath;
-	/**
-	 * Image path used for initializing the open lines dialog.
-	 */
-	protected String initialLinesPath;
-	/**
-	 * Image path used for opening GPX files.
-	 */
-	protected String initialGpxPath;
-	/**
-	 * Image path used for initializing the open dialog for other than images and
-	 * calibration, in particular writing GPX and GPSL files.
-	 */
-	protected String initialDataPath;
 
 	/** The viewer that controls most of the drawing. */
 	protected SWTImageViewerControl viewer;
@@ -151,22 +137,6 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		if (initialImagePath != null && initialImagePath.length() == 0) {
 			initialImagePath = null;
 		}
-		initialCalibPath = prefs.getString(P_INITIAL_CALIB_PATH);
-		if (initialCalibPath != null && initialCalibPath.length() == 0) {
-			initialCalibPath = null;
-		}
-		initialLinesPath = prefs.getString(P_INITIAL_LINES_PATH);
-		if (initialLinesPath != null && initialLinesPath.length() == 0) {
-			initialLinesPath = null;
-		}
-		initialDataPath = prefs.getString(P_INITIAL_DATA_PATH);
-		if (initialDataPath != null && initialDataPath.length() == 0) {
-			initialDataPath = null;
-		}
-		initialGpxPath = prefs.getString(P_INITIAL_GPX_PATH);
-		if (initialGpxPath != null && initialGpxPath.length() == 0) {
-			initialGpxPath = null;
-		}
 
 		// SWT.DEFAULT gives scroll bars in addition to those on the Control
 		// SWT.NONE does not
@@ -244,7 +214,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "Calibration: *.calib" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialCalibPath);
+		dlg.setFilterPath(initialImagePath);
 
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
@@ -268,11 +238,11 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 			// Extract the directory part of the selectedPath
 			int index = fileName.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialCalibPath = fileName.substring(0, index);
+				initialImagePath = fileName.substring(0, index);
 			}
 			// Save these as startup preferences
 			setStringPreference(P_CALIB_FILE_NAME, calibFileName);
-			setStringPreference(P_INITIAL_CALIB_PATH, initialCalibPath);
+			setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			viewer.getCanvas().redraw();
 		} catch (Exception ex) {
 			SWTUtils.excMsg("Failed to read calibration file", ex);
@@ -310,7 +280,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "Lines: *.lines" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialLinesPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
@@ -320,8 +290,8 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialLinesPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_LINES_PATH, initialLinesPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			try {
 				lines.readLines(fileName);
@@ -350,7 +320,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "GPX: *.gpx" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialGpxPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
@@ -358,19 +328,19 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		// Save the path for next time
 		if (selectedPath == null)
 			return;
-		initialGpxPath = selectedPath;
+		initialImagePath = selectedPath;
 		// Extract the directory part of the selectedPath
 		index = selectedPath.lastIndexOf(File.separator);
 		if (index > 0) {
-			initialGpxPath = selectedPath.substring(0, index);
-			setStringPreference(P_INITIAL_GPX_PATH, initialGpxPath);
+			initialImagePath = selectedPath.substring(0, index);
+			setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 		}
 		// Loop over the files
 		String[] files = dlg.getFileNames();
 		File file;
 		for (String name : files) {
 			// getFileNames() returns only the names, and not the path
-			file = new File(initialGpxPath, name);
+			file = new File(initialImagePath, name);
 			fileName = file.getPath();
 			try {
 				lines.readGpxLines(fileName, mapCalibration);
@@ -395,19 +365,19 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "Lines: *.lines" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialLinesPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialLinesPath = selectedPath;
+			initialImagePath = selectedPath;
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialLinesPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_LINES_PATH, initialLinesPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			lines.saveLines(fileName);
 		}
@@ -448,14 +418,14 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "PNG: *.png" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialLinesPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialLinesPath = selectedPath;
+			initialImagePath = selectedPath;
 			// Check the extension
 			String ext = SWTUtils.getExtension(new File(selectedPath));
 			if (ext == null || !ext.toLowerCase().equals("png")) {
@@ -465,8 +435,8 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialLinesPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_LINES_PATH, initialLinesPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			lines.saveLinesImage(display, fileName, width, height, withImage ? viewer.getImage() : null);
 		}
@@ -494,19 +464,19 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "GPX: *.gpx" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialDataPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialDataPath = selectedPath;
+			initialImagePath = selectedPath;
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialDataPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_DATA_PATH, initialDataPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			String trackName = "Map Lines";
 			if (imageFileName != null) {
@@ -558,19 +528,19 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "GPSL: *.gpsl" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialDataPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialDataPath = selectedPath;
+			initialImagePath = selectedPath;
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialDataPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_DATA_PATH, initialDataPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			try {
 				GPSLUtils.saveGPSLMapFile(fileName, imageFileName, mapCalibration);
@@ -602,19 +572,19 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		String[] names = { "CSV: *.csv" };
 		dlg.setFilterExtensions(extensions);
 		dlg.setFilterNames(names);
-		dlg.setFilterPath(initialDataPath);
+		dlg.setFilterPath(initialImagePath);
 
 		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialDataPath = selectedPath;
+			initialImagePath = selectedPath;
 			// Extract the directory part of the selectedPath
 			index = selectedPath.lastIndexOf(File.separator);
 			if (index > 0) {
-				initialDataPath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_DATA_PATH, initialDataPath);
+				initialImagePath = selectedPath.substring(0, index);
+				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 
 			GPXUtils.writeCSVFile(fileName, mapCalibration, lines);
