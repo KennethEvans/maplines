@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="book.css" rel="stylesheet" type="text/css" />
+<title>Map Lines</title>
+</head>
+<body>
+<h1 align="center">Map Lines </h1>
+<p>Map Lines  is an application that primarily allows you to digitalize points on images by drawing lines between them. It saves the pixel coordinates of points on the line in a file. It was originally designed to trace old railroad beds in Northern Wisconsin that had been drawn by hand on USGS geologic maps by James P. Kaysen with the purpose in mind to display these digitally in an application such as Google Maps. It can more generally be used to draw GPS tracks or other data on an image of a map, such as one with hiking trails.</p>
+<p>The digitizing capability does not require a coordinate system other than the x,y pixel coordinates of the image. However, it is necessary to convert the pixel coordinates to latitude and longitude coordinates in order to display GPS data. To do this a calibration file is needed. The calibration file must be created outside of Map Lines, typically in a text editor. See <a href="#calibration">Calibration Files</a> for more details. </p>
+<p> <a href="https://github.com/KennethEvans/Map-Image">MapImage</a> is an open-source Android app that displays your current location on a map that has been calibrated in this way. Map Lines will also let you add lines from <a href="https://www.topografix.com/gpx.asp">GPX</a> files to an existing image. You can use this to show where you have been before as well as where you are now. The following is a screen dump from MapImage showing the current location and assorted previous GPS tracks on a map of hiking trails. The GPS tracks were added to the original image of the map using Map Lines. Map Lines is not necessary to use MapImage unless you want to add GPS lines or other data. </p>
+<p align="center"><img src="images/Highland Large GPS.png" alt="Highland State Recreation trea" width="25%" /></p>
+<p> Map Lines can also be used to digitize graphs, that is, get the x,y pixel coordinates of the points of the lines in the graph..</p>
+<p>To use Map Lines you would typically load an image file and a calibration file. You can then draw lines or generate them from <a href="https://www.topografix.com/gpx.asp">GPX</a> files. You can start and end lines using the right-click <a href="#contextmenu">Context Menu</a>. You can save the lines as a Map Lines .lines file (one line for each point consisting of the x and y pixel values), a transparent PNG file consisting of only the lines, a PNG file of the original image including the lines, a GPX file, a GPSL file (not commonly used), or a CSV file. The PNG files can then be used in MapImage provided you have the corresponding calibration file. </p>
+<p>Map Lines  is based on <a href="http://eclipse.org/">Eclipse</a> and requires Java to be installed. You should be able to get Java <a href="http://www.java.com/en/download/index.jsp">here</a>. You install it by unzipping the files into some directory and uninstall it by removing them. It does not use the Windows registry. You run it from its executable, MapLines.exe on Windows or MapLines on UNIX systems. It is currently only available for Windows, primarily owing to a lack of available test machines for other platforms.</p>
+<p>Note that most of the user interface elements, such as buttons, text entries, checkboxes, etc., have tool tips which should appear when you hold the cursor over them. This is the easiest way to get help on what these controls do. </p>
+<h2 align="left"><a name="calibration" id="calibration"></a>Calibration Files </h2>
+<p align="left">The calibration is specified in a text file with extension .calib consisting of lines of the form:</p>
+<p align="left"> integer x, white space, integer y, white space, decimal longitude, white space, decimal latitude.</p>
+<p align="left">These can optionally be followed by:</p>
+<p align="left"> white space, then a comment.</p>
+<p align="left">x and y are the pixel coordinates in the image, starting at (0, 0) in the upper left and ending at (width-1, height-1) in the lower right. There must be at least three such lines, but there can be as many over this as you like. Map Lines (and also <a href="https://github.com/KennethEvans/Map-Image">MapImage</a>) will find the best fit to all the values specified using a matrix method known as Singular Value Decomposition. The points specified must be sufficient to determine the latitude and longitude. Three co-linear points will not work. </p>
+<p align="left">This is an example of a calib file corresponding to an image of width 832 and height 1079. (The calibration points are at the corners in this case):</p>
+<pre>   0     0   -83.603411    42.642879 NW
+ 831     0   -83.568607    42.643245 NE
+ 831  1078   -83.568255    42.609770 SE
+   0  1078   -83.603059    42.609404 SW
+</pre>
+<p> An image manipulation program, such as Photoshop, is used to find the pixel values of points for which you know the latitude and longitude. These could be known latitude and longiture for some landmark or the corners of the map. A way to determine the corner values is by placing the image as an overlay in Google Earth (Add | Image Overlay) then adjusting it to match up with what is displayed in Google Earth. You can then put placemarks on the corners and get the latitude and longitude from the placemarks. Use Add Placemark and move the pushpin icon so the point is at each corner in turn.</p>
+<p>Note that the calibration is not limited to GPS latitude and longitude.  It can be calibrated to any 2D coordinate system, for example, the x and y axes of a graph. </p>
+<h2>Menus</h2>
+<h3>File Menu </h3>
+<h4>Open Image</h4>
+<p>Open an image. JPEG, PNG, or BMP image formats are suggested. </p>
+<h4>Open Calibration</h4>
+<p>Opens a <a href="#calibration">calibration file</a>. These typically have a .calib extension. </p>
+<h4>Open Lines</h4>
+<p>Opens a lines  file. These typically have a .lines extension. They consist of one line for each point consisting of  the x and y pixel coordinates separated by a space. </p>
+<h4>Lines from GPX</h4>
+<p>Generate lines from a GPX file or files. More than one file can be chosen. </p>
+<h4>Save Lines</h4>
+<p>Save the existing lines as a lines file. </p>
+<h4>Save Lines as PNG </h4>
+<p>Save the existing lines as a PNG file. It will be transparent except for the lines and can be pasted or added as a layer in most image manipulation programs. </p>
+<h4>Save Lines with Image as PNG </h4>
+<p>Saves the current image along with the lines as a PNG file. This is typically used to add GPS tracks to an existing map. </p>
+<h4>Save GPX</h4>
+<p>Save the lines in GPX format. The resulting files can be loaded into Google Earth, for example. </p>
+<h4>Save GPSL</h4>
+<p>Save the lines in GPSL format. This is not a common format and is provided for use in older programs by the same author. </p>
+<h4>Save CSV</h4>
+<p>Save the lines in CSV format. Each line with have the x and y pixel coordinates, comma separated. </p>
+<h4>Exit</h4>
+<p>Quits Map Lines. </p>
+<h3>Edit Menu </h3>
+<h4>Edit Lines </h4>
+<p>Brings up a dialog where you can manage the existing lines, including deleting, renaming, changing the color, and moving them up and down in the order. Map Lines automatically generates names of the form <em>Line nnn</em> as you start lines and can also generate calibration lines (see <a href="#contextmenu">Context Menu</a>). The default color is red. Use this dialog to manage the lines you created if necessary. </p>
+<h3>Help Menu </h3>
+<h4>Contents</h4>
+<p>Brings up  help for Map Lines in a browser, starting at this page. The browser is relatively simple. Forward and Back buttons are in the right-click context menu.. </p>
+<h4>About</h4>
+<p>Brings up a dialog with information about Map Lines including the installed Eclipse plug-ins and information about your Java and Eclipse environment.</p>
+<h3><a name="contextmenu" id="contextmenu"></a>Context Menu</h3>
+<p>You get the context menu by right clicking on the image. </p>
+<h4>Start Line</h4>
+<p>Start a new line. The next click on the image will be the starting point, and with each successive click a line is drawn from the previous point. </p>
+<h4>End Line</h4>
+<p>Stop adding points to the current line. The next Start Line with be a new, disconnected line. </p>
+<h4>Delete Last Point</h4>
+<p>Deletes the last point. Usually used when you did not get the point in the right place. </p>
+<h4>Calibration Lines</h4>
+<p>Generate lines from the calibration file. If you are using the corners of the image as calibration points, this allows you to check that they are, in fact, on the edges of the image, as they should be if your calibration is correct. </p>
+<h4>Clear Lines    </h4>
+<p>Clears all of the lines. Use Edit Lines for more individual control. </p>
+</body>
+</html>

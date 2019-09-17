@@ -122,6 +122,11 @@
         <menu
                label="Help">
            <command
+                 commandId="net.kenevans.maplines.helpContents"
+                 label="Help Contents"
+                 style="push">
+           </command>
+           <command
                   commandId="org.eclipse.ui.help.aboutAction"
                   label="About">
             </command>
@@ -278,6 +283,12 @@
             categoryId="net.kenevans.maplines.category"
             id="net.kenevans.maplines.linesfromgpx"
             name="Lines from GPX...">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            defaultHandler="net.kenevans.maplines.handlers.HelpContentsHandler"
+            id="net.kenevans.maplines.helpContents"
+            name="Help Contents...">
       </command>
    </extension>
 

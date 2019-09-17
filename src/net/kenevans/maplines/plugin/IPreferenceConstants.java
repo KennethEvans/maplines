@@ -7,14 +7,9 @@ package net.kenevans.maplines.plugin;
  * Map Lines is using preferences only to retain current values for the next
  * run.
  */
-public interface IPreferenceConstants
-{
-    /** The name of the image file */
-    public static final String P_IMAGE_FILE_NAME = "imageFileName";
-    public static final String P_CALIB_FILE_NAME = "calibFileName";
-    public static final String P_INITIAL_IMAGE_PATH = "initialImagePath";
-    public static final String P_INITIAL_CALIB_PATH = "initialCalibPath";
-    public static final String P_INITIAL_LINES_PATH = "initialLinesPath";
-    public static final String P_INITIAL_DATA_PATH = "initialDataPath";
-    public static final String P_INITIAL_GPX_PATH = "initialGpxPath";
+public interface IPreferenceConstants {
+	/** The name of the image file */
+	public static final String P_IMAGE_FILE_NAME = "imageFileName";
+	public static final String P_CALIB_FILE_NAME = "calibFileName";
+	public static final String P_INITIAL_IMAGE_PATH = "initialImagePath";
 }

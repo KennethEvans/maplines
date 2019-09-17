@@ -368,7 +368,7 @@ public class Lines {
 					line.addPoint(point);
 				}
 				if (line.getNPoints() == 0) {
-					SWTUtils.warnMsg("No points found");
+					SWTUtils.warnMsg("No points found in " + fileName);
 				}
 				addLine(line);
 				line = null;
