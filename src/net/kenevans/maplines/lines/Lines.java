@@ -334,6 +334,7 @@ public class Lines {
 		boolean ok = false;
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		documentBuilderFactory.setNamespaceAware(true);
 		int nTrkPoints = 0, nTrkSeg = 0;
 		FileInputStream fileInputStream = null;
 		try {
@@ -343,7 +344,7 @@ public class Lines {
 			Element elementRoot = document.getDocumentElement();
 
 			Node node;
-			NodeList nodelist_trkseg = elementRoot.getElementsByTagName("trkseg");
+			NodeList nodelist_trkseg = elementRoot.getElementsByTagNameNS("*", "trkseg");
 			for (int i = 0; i < nodelist_trkseg.getLength(); i++) {
 				node = nodelist_trkseg.item(i);
 				if (!(node instanceof Element)) {
@@ -351,7 +352,7 @@ public class Lines {
 					continue;
 				}
 				nTrkSeg++;
-				NodeList nodelist_trkpt = ((Element) node).getElementsByTagName("trkpt");
+				NodeList nodelist_trkpt = ((Element) node).getElementsByTagNameNS("*", "trkpt");
 				String string = null;
 				Line line = new Line();
 				line.setDesc("Segment " + nTrkSeg + " from " + fileName);
