@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.4.6.0" useFeatures="false" includeLaunchers="true">
+<product name="Map Lines" id="net.kenevans.maplines.product" application="net.kenevans.maplines.application" version="1.4.7.0" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/net.kenevans.maplines/icons/MapLinesAbout.png"/>
@@ -14,7 +14,7 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xms40m -Xmx1024m
+      <vmArgs>-Xm256m -Xmx2048m
       </vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
       </vmArgsMac>

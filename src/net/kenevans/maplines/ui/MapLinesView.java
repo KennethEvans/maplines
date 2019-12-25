@@ -235,14 +235,8 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 			mapCalibration = new MapCalibration();
 			mapCalibration.read(new File(fileName));
 			calibFileName = fileName;
-			// Extract the directory part of the selectedPath
-			int index = fileName.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = fileName.substring(0, index);
-			}
 			// Save these as startup preferences
 			setStringPreference(P_CALIB_FILE_NAME, calibFileName);
-			setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			viewer.getCanvas().redraw();
 		} catch (Exception ex) {
 			SWTUtils.excMsg("Failed to read calibration file", ex);
@@ -282,17 +276,10 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
-			}
 			try {
 				lines.readLines(fileName);
 			} catch (Exception ex) {
@@ -305,14 +292,14 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 	/**
 	 * Brings up a FileDialog to choose a GPX file for lines.
 	 */
-	public void linesFromGpx() {
+	public boolean linesFromGpx() {
 		if (mapCalibration == null) {
 			SWTUtils.errMsg("Calibration for converting lines is not available");
-			return;
+			return false;
 		}
 		if (mapCalibration.getTransform() == null) {
 			SWTUtils.errMsg("Calibration for converting lines is not valid");
-			return;
+			return false;
 		}
 		// Open a FileDialog with multiple selection
 		FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(), SWT.MULTI);
@@ -322,33 +309,37 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
-		String fileName = selectedPath;
-		// Save the path for next time
-		if (selectedPath == null)
-			return;
-		initialImagePath = selectedPath;
+		String filePath = null, fileName = null;
 		// Extract the directory part of the selectedPath
-		index = selectedPath.lastIndexOf(File.separator);
+		int index = selectedPath.lastIndexOf(File.separator);
 		if (index > 0) {
-			initialImagePath = selectedPath.substring(0, index);
-			setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
+			filePath = selectedPath.substring(0, index);
 		}
+		// Save the path for next time
+		if (filePath == null)
+			return false;
 		// Loop over the files
 		String[] files = dlg.getFileNames();
 		File file;
 		for (String name : files) {
 			// getFileNames() returns only the names, and not the path
-			file = new File(initialImagePath, name);
+			file = new File(filePath, name);
 			fileName = file.getPath();
+			boolean res = false;
 			try {
-				lines.readGpxLines(fileName, mapCalibration);
+				res = lines.readGpxLines(fileName, mapCalibration);
+				if (!res) {
+					SWTUtils.errMsg("Error reading GpxFile: " + fileName + SWTUtils.LS + "Aborting");
+					return false;
+				}
 			} catch (Exception ex) {
-				SWTUtils.excMsg("Failed to read GPX file", ex);
+				SWTUtils.excMsg("Failed to read GPX file: " + fileName, ex);
+				return false;
 			}
 		}
 		viewer.getCanvas().redraw();
+		return true;
 	}
 
 	/**
@@ -367,18 +358,10 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialImagePath = selectedPath;
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
-			}
 			lines.saveLines(fileName);
 		}
 	}
@@ -420,23 +403,15 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialImagePath = selectedPath;
 			// Check the extension
 			String ext = SWTUtils.getExtension(new File(selectedPath));
 			if (ext == null || !ext.toLowerCase().equals("png")) {
 				SWTUtils.errMsg("Only PNG (.png) is supported");
 				return;
-			}
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
 			}
 			lines.saveLinesImage(display, fileName, width, height, withImage ? viewer.getImage() : null);
 		}
@@ -466,18 +441,10 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialImagePath = selectedPath;
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
-			}
 			String trackName = "Map Lines";
 			if (imageFileName != null) {
 				File file = new File(imageFileName);
@@ -530,18 +497,10 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
 		// Save the path for next time
 		if (selectedPath != null) {
-			initialImagePath = selectedPath;
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
-			}
 			try {
 				GPSLUtils.saveGPSLMapFile(fileName, imageFileName, mapCalibration);
 			} catch (Throwable t) {
@@ -574,19 +533,9 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 		dlg.setFilterNames(names);
 		dlg.setFilterPath(initialImagePath);
 
-		int index = 0;
 		String selectedPath = dlg.open();
 		String fileName = selectedPath;
-		// Save the path for next time
 		if (selectedPath != null) {
-			initialImagePath = selectedPath;
-			// Extract the directory part of the selectedPath
-			index = selectedPath.lastIndexOf(File.separator);
-			if (index > 0) {
-				initialImagePath = selectedPath.substring(0, index);
-				setStringPreference(P_INITIAL_IMAGE_PATH, initialImagePath);
-			}
-
 			GPXUtils.writeCSVFile(fileName, mapCalibration, lines);
 		}
 	}
@@ -597,21 +546,32 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 	 * @param fileName
 	 */
 	public void loadImage(String fileName) {
-		// // DEBUG
-		// System.out.println("loadImage:");
-		// double free = Runtime.getRuntime().freeMemory();
-		// double total = Runtime.getRuntime().totalMemory();
-		// double max = Runtime.getRuntime().maxMemory();
-		// System.out.println(String.format(
-		// " Before: Free Memory: %.2f / %.2f (Max %.2f) MB",
-		// free / 1024. / 1024., total / 1024. / 1024., max / 1024. / 1024.));
+//		 // DEBUG
+//		 System.out.println("loadImage:");
+//		 double free = Runtime.getRuntime().freeMemory();
+//		 double total = Runtime.getRuntime().totalMemory();
+//		 double max = Runtime.getRuntime().maxMemory();
+//		 System.out.println(String.format(
+//		 " Before: Free Memory: %.2f / %.2f (Max %.2f) MB",
+//		 free / 1024. / 1024., total / 1024. / 1024., max / 1024. / 1024.));
 		if (fileName == null) {
 			return;
 		}
 		Image newImage = null;
 		try {
 			// Do this to conserve memory
+			Image oldImage = viewer.getImage();
+			if (oldImage != null && !oldImage.isDisposed()) {
+				oldImage.dispose();
+			}
 			viewer.setImage(null);
+//			 // DEBUG
+//			 free = Runtime.getRuntime().freeMemory();
+//			 total = Runtime.getRuntime().totalMemory();
+//			 max = Runtime.getRuntime().maxMemory();
+//			 System.out.println(String.format(
+//			 " After Dispose Old Image: Free Memory: %.2f / %.2f (Max %.2f) MB",
+//			 free / 1024. / 1024., total / 1024. / 1024., max / 1024. / 1024.));
 			newImage = new Image(display, fileName);
 			shell.setText(fileName);
 			imageFileName = fileName;
@@ -632,13 +592,13 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants {
 				newImage = null;
 			}
 		}
-		// // DEBUG
-		// free = Runtime.getRuntime().freeMemory();
-		// total = Runtime.getRuntime().totalMemory();
-		// max = Runtime.getRuntime().maxMemory();
-		// System.out.println(String.format(
-		// " After: Free Memory: %.2f / %.2f (Max %.2f) MB",
-		// free / 1024. / 1024., total / 1024. / 1024., max / 1024. / 1024.));
+//		 // DEBUG
+//		 free = Runtime.getRuntime().freeMemory();
+//		 total = Runtime.getRuntime().totalMemory();
+//		 max = Runtime.getRuntime().maxMemory();
+//		 System.out.println(String.format(
+//		 " After: Free Memory: %.2f / %.2f (Max %.2f) MB",
+//		 free / 1024. / 1024., total / 1024. / 1024., max / 1024. / 1024.));
 	}
 
 	/**
