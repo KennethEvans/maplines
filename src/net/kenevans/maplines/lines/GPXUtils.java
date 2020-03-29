@@ -60,6 +60,13 @@ public class GPXUtils
             PrintWriter out = null;
             try {
                 Date date = new Date();
+                // TEMP Use to generate GPX with specific start time and speed.
+                // Requires change in timeString and some printout below
+                // Search for TEMP
+                // date = new
+                // SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS").parse("2020-03-21T15:51:33.002");
+                // DEFAULT_SPEED = 1.524153;
+
                 out = new PrintWriter(new FileWriter(file));
                 // Write header
                 out.println(
@@ -95,6 +102,7 @@ public class GPXUtils
                     out.println("    </extensions>");
                     double lon0 = 0, lat0 = 0;
                     double dist = 0;
+                    double distTot = 0;
                     long time = 0;
                     for(int i = 0; i < lines.getNLines(); i++) {
                         line = lines.getLines().get(i);
@@ -118,11 +126,12 @@ public class GPXUtils
                                 time = (long)(dist / DEFAULT_SPEED * 3600.
                                     * 1000.);
                                 date.setTime(date.getTime() + time);
-                                System.out.println("dist=" + dist + " time="
-                                    + time + " (" + time / 1000 + " sec)");
+                                // System.out.println("dist=" + dist + " time="
+                                // + time + " (" + time / 1000 + " sec)");
                                 lon0 = vals[0];
                                 lat0 = vals[1];
                             }
+                            distTot += dist;
                             out.println(String.format("        <time>%s</time>",
                                 timeString(date)));
                             out.println("      </trkpt>");
@@ -131,6 +140,8 @@ public class GPXUtils
                     }
                     out.println("  </trk>");
                     out.println("</gpx>");
+                    System.out.println("distTot=" + distTot + " speed="
+                        + DEFAULT_SPEED + " endTime=" + timeString(date));
                 }
             } catch(Exception ex) {
                 SWTUtils.excMsg("Error writing " + fileName, ex);
@@ -198,6 +209,9 @@ public class GPXUtils
         }
         SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        // TEMP Use to generate GPX with specific format.
+        // Comment out formatter.setTimeZone
+        // formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         return formatter.format(date);
     }
