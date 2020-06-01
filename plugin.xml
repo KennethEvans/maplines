@@ -290,6 +290,46 @@
             id="net.kenevans.maplines.helpContents"
             name="Help Contents...">
       </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.ctrlhome"
+            name="CtrlHome">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.ctrlend"
+            name="CtrlEnd">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.ctrl0"
+            name="Ctlr0">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <scheme
+            id="net.kenevans.maplines.scheme"
+            name="MapLinesScheme">
+      </scheme>
+      <key
+            commandId="net.kenevans.maplines.ctrlhome"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="M1+HOME">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.ctrlend"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="M1+END">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.ctrl0"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="M1+0">
+      </key>
    </extension>
 
 </plugin>

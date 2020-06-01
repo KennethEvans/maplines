@@ -162,8 +162,7 @@ public class SWTImageViewerControl extends Composite
                                 prev = point;
                             } else {
                                 // Only the image scrolls. Have to add origin to
-                                // get
-                                // the right coordinates.
+                                // get the right coordinates.
                                 gc.drawLine(origin.x + prev.x,
                                     origin.y + prev.y, origin.x + point.x,
                                     origin.y + point.y);
@@ -283,6 +282,17 @@ public class SWTImageViewerControl extends Composite
      * Resets the canvas and scroll bars and does a redraw.
      */
     public void resetCanvas() {
+        resetCanvas(0, 0);
+    }
+
+    /**
+     * Resets the canvas and sets the scroll bars to select the given width and
+     * height then does a redraw.
+     * 
+     * @param x The x coordinate of the selection
+     * @param y The coordinate of the selection
+     */
+    public void resetCanvas(int x, int y) {
         if(canvas == null || canvas.isDisposed()) return;
         if(image == null || image.isDisposed()) {
             canvas.redraw();
@@ -298,16 +308,19 @@ public class SWTImageViewerControl extends Composite
         vBar.setThumb(Math.min(rect.height, client.height));
         int hPage = rect.width - client.width;
         int vPage = rect.height - client.height;
+        hBar.setSelection(x);
+        vBar.setSelection(y);
+        // The selection values may be different than set
         int hSelection = hBar.getSelection();
         int vSelection = vBar.getSelection();
         if(hSelection >= hPage) {
             if(hPage <= 0) hSelection = 0;
-            origin.x = -hSelection;
         }
         if(vSelection >= vPage) {
             if(vPage <= 0) vSelection = 0;
-            origin.y = -vSelection;
         }
+        origin.x = -hSelection;
+        origin.y = -vSelection;
         canvas.redraw();
     }
 
