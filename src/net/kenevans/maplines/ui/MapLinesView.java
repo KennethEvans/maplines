@@ -19,12 +19,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
@@ -643,7 +643,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
 
     private void keyPressed(String key) {
         // DEBUG
-        System.out.println("keyPressed: key=" + key);
+        // System.out.println("keyPressed: key=" + key);
         if(viewer == null || viewer.getImage() == null) {
             return;
         }
@@ -660,15 +660,45 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
         if(width <= 0 || height <= 0) {
             return;
         }
-        if(key.equals("Ctrl+Home")) {
-            viewer.resetCanvas(0, 0);
-        } else if(key.equals("Ctrl+End")) {
-            viewer.resetCanvas(width, height);
-        } else if(key.equals("Ctrl+0")) {
-            viewer.resetCanvas(width / 2, height / 2);
+        Canvas canvas = viewer.getCanvas();
+        if(canvas == null) {
+            return;
         }
-   }
-    
+        if(key.equals("Ctrl+Home")) {
+            viewer.scroll(0, 0);
+        } else if(key.equals("Ctrl+End")) {
+            viewer.scroll(width, height);
+        } else if(key.equals("Ctrl+0")) {
+            int hThumb = viewer.getCanvas().getHorizontalBar().getThumb();
+            int vThumb = viewer.getCanvas().getVerticalBar().getThumb();
+            viewer.scroll((width - hThumb) / 2, (height - vThumb) / 2);
+        } else if(key.equals("Right")) {
+            int vSelection = viewer.getCanvas().getVerticalBar().getSelection();
+            int hSelection = viewer.getCanvas().getHorizontalBar()
+                .getSelection();
+            int hThumb = viewer.getCanvas().getHorizontalBar().getThumb();
+            viewer.scroll(hSelection + hThumb, vSelection);
+        } else if(key.equals("Left")) {
+            int vSelection = viewer.getCanvas().getVerticalBar().getSelection();
+            int hSelection = viewer.getCanvas().getHorizontalBar()
+                .getSelection();
+            int hThumb = viewer.getCanvas().getHorizontalBar().getThumb();
+            viewer.scroll(hSelection - hThumb, vSelection);
+        } else if(key.equals("Down")) {
+            int hSelection = viewer.getCanvas().getHorizontalBar()
+                .getSelection();
+            int vSelection = viewer.getCanvas().getVerticalBar().getSelection();
+            int vThumb = viewer.getCanvas().getVerticalBar().getThumb();
+            viewer.scroll(hSelection, vSelection + vThumb);
+        } else if(key.equals("Up")) {
+            int hSelection = viewer.getCanvas().getHorizontalBar()
+                .getSelection();
+            int vSelection = viewer.getCanvas().getVerticalBar().getSelection();
+            int vThumb = viewer.getCanvas().getVerticalBar().getThumb();
+            viewer.scroll(hSelection, vSelection - vThumb);
+        }
+    }
+
     /**
      * Creates handlers.
      */
@@ -892,7 +922,7 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
         };
         id = "net.kenevans.maplines.ctrlend";
         handlerService.activateHandler(id, handler);
-        
+
         // Ctrl+0
         handler = new AbstractHandler() {
             public Object execute(ExecutionEvent event)
@@ -902,6 +932,50 @@ public class MapLinesView extends ViewPart implements IPreferenceConstants
             }
         };
         id = "net.kenevans.maplines.ctrl0";
+        handlerService.activateHandler(id, handler);
+
+        // Right
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                keyPressed("Right");
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.right";
+        handlerService.activateHandler(id, handler);
+
+        // Left
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                keyPressed("Left");
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.left";
+        handlerService.activateHandler(id, handler);
+
+        // Down
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                keyPressed("Down");
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.down";
+        handlerService.activateHandler(id, handler);
+
+        // Up
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                keyPressed("Up");
+                return null;
+            }
+        };
+        id = "net.kenevans.maplines.up";
         handlerService.activateHandler(id, handler);
     }
 

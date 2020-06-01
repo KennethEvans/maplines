@@ -123,7 +123,7 @@
                label="Help">
            <command
                  commandId="net.kenevans.maplines.helpContents"
-                 label="Help Contents"
+                 label="Overview"
                  style="push">
            </command>
            <command
@@ -305,6 +305,26 @@
             id="net.kenevans.maplines.ctrl0"
             name="Ctlr0">
       </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.right"
+            name="Right">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.left"
+            name="Left">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.down"
+            name="Down">
+      </command>
+      <command
+            categoryId="net.kenevans.maplines.category"
+            id="net.kenevans.maplines.up"
+            name="Up">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -329,6 +349,30 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="net.kenevans.maplines.scheme"
             sequence="M1+0">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.right"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="Arrow_Right">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.left"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="Arrow_Left">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.down"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="Arrow_Down">
+      </key>
+      <key
+            commandId="net.kenevans.maplines.up"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="net.kenevans.maplines.scheme"
+            sequence="Arrow_Up">
       </key>
    </extension>
 

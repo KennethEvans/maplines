@@ -75,13 +75,15 @@ public class SWTImageViewerControl extends Composite
         hBar = canvas.getHorizontalBar();
         hBar.addListener(SWT.Selection, new Listener() {
             public void handleEvent(Event ev) {
-                // // DEBUG
-                // System.out.println("handleEvent for SWT.Selection H");
                 int hSelection = hBar.getSelection();
                 int destX = -hSelection - origin.x;
                 Rectangle rect = image.getBounds();
                 canvas.scroll(destX, 0, 0, 0, rect.width, rect.height, false);
                 origin.x = -hSelection;
+                // // DEBUG
+                // System.out.println(
+                // "handleEvent H destX=" + destX + " hSelection=" + hSelection
+                // + " new Hselection=" + hBar.getSelection());
             }
         });
 
@@ -285,6 +287,22 @@ public class SWTImageViewerControl extends Composite
         resetCanvas(0, 0);
     }
 
+    public void scroll(int x, int y) {
+        hBar.setSelection(x);
+        vBar.setSelection(y);
+        int destX = x - origin.x;
+        int destY = y - origin.y;
+        Rectangle rect = image.getBounds();
+        canvas.scroll(destX, destY, 0, 0, rect.width, rect.height, false);
+        origin.x = -hBar.getSelection();
+        origin.y = -vBar.getSelection();
+        // // DEBUG
+        // System.out.println("scroll: x=" + x + " y=" + y + " destX=" + destX
+        // + " destY=" + destY + " new Hselection=" + hBar.getSelection()
+        // + " new vSelection=" + vBar.getSelection());
+        // canvas.redraw();
+    }
+
     /**
      * Resets the canvas and sets the scroll bars to select the given width and
      * height then does a redraw.
@@ -321,6 +339,13 @@ public class SWTImageViewerControl extends Composite
         }
         origin.x = -hSelection;
         origin.y = -vSelection;
+        // // Debug
+        // System.out.println("resetCanvas: x=" + x + " y=" + y + " width="
+        // + rect.width + " height=" + rect.height + " clientWidth="
+        // + client.width + " clientHeight=" + client.height + " hThumb="
+        // + hBar.getThumb() + " vThumb=" + vBar.getThumb() + " hPage=" + hPage
+        // + " vPage=" + vPage + " hSelection=" + hSelection + " vSelection="
+        // + vSelection);
         canvas.redraw();
     }
 
