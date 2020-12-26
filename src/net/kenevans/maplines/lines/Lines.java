@@ -173,7 +173,7 @@ public class Lines {
 					for (int i = 0; i < getNLines(); i++) {
 						line = lines.get(i);
 						if (line.getDesc() != null && line.getDesc().length() != 0) {
-							out.println(START_LINES_TAG + " " + line.getDesc());
+							out.println(START_LINES_TAG + "," + line.getDesc());
 						} else {
 							out.println(START_LINES_TAG);
 						}
@@ -272,7 +272,6 @@ public class Lines {
 	 * @throws IOException
 	 */
 	public boolean readLines(String fileName) throws NumberFormatException, IOException {
-		boolean ok = false;
 		BufferedReader in = null;
 		String[] tokens = null;
 		int x, y;
@@ -318,7 +317,7 @@ public class Lines {
 			line.addPoint(new Point(x, y));
 		}
 		in.close();
-		return ok;
+		return true;
 	}
 
 	/**
@@ -368,12 +367,14 @@ public class Lines {
 					point = mapCalibration.inverse(lon, lat);
 					line.addPoint(point);
 				}
-				if (line.getNPoints() == 0) {
-					SWTUtils.warnMsg("No points found in " + fileName);
+				if (line.getNPoints() > 0) {
+	                addLine(line);
 				}
-				addLine(line);
 				line = null;
 				ok = true;
+			}
+			if(nTrkPoints == 0) {
+			    SWTUtils.warnMsg("No points found in " + fileName);
 			}
 		} catch (ParserConfigurationException ex) {
 			SWTUtils.excMsg("Parser Configuration Error", ex);
