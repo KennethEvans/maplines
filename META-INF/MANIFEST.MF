@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Map Lines
 Bundle-SymbolicName: net.kenevans.maplines; singleton:=true
-Bundle-Version: 1.4.10.0
+Bundle-Version: 1.4.11.0
 Bundle-Activator: net.kenevans.maplines.plugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
